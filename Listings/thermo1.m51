@@ -1,0 +1,215 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/13/2021  21:57:09  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\thermo.obj TO .\Objects\thermo1 PRINT (.\Listings\thermo1.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\thermo.obj (THERMO)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?COPY)
+
+
+LINK MAP OF MODULE:  .\Objects\thermo1 (THERMO)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0017H     UNIT         _DATA_GROUP_
+            IDATA   001FH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     00F6H     UNIT         ?C?LIB_CODE
+            CODE    08F6H     008EH     UNIT         ?PR?MAIN?THERMO
+            CODE    0984H     0034H     UNIT         ?PR?_CONVERT_DISPLAY?THERMO
+            CODE    09B8H     0028H     UNIT         ?PR?_DELAY?THERMO
+            CODE    09E0H     0012H     UNIT         ?CO?THERMO
+            CODE    09F2H     000CH     UNIT         ?C_C51STARTUP
+            CODE    09FEH     000AH     UNIT         ?PR?_CMDWRT?THERMO
+            CODE    0A08H     000AH     UNIT         ?PR?_DATAWRT?THERMO
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\thermo1 (THERMO)
+
+
+SEGMENT                               DATA_GROUP 
+  +--> CALLED SEGMENT               START    LENGTH
+---------------------------------------------------
+?C_C51STARTUP                       -----    -----
+  +--> ?PR?MAIN?THERMO
+
+?PR?MAIN?THERMO                     0008H    0014H
+  +--> ?CO?THERMO
+  +--> ?PR?_CMDWRT?THERMO
+  +--> ?PR?_DELAY?THERMO
+  +--> ?PR?_DATAWRT?THERMO
+  +--> ?PR?_CONVERT_DISPLAY?THERMO
+
+?PR?_CMDWRT?THERMO                  -----    -----
+  +--> ?PR?_DELAY?THERMO
+
+?PR?_DATAWRT?THERMO                 -----    -----
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/13/2021  21:57:09  PAGE 2
+
+
+  +--> ?PR?_DELAY?THERMO
+
+?PR?_CONVERT_DISPLAY?THERMO         001CH    0003H
+  +--> ?PR?_CMDWRT?THERMO
+  +--> ?PR?_DATAWRT?THERMO
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\thermo1 (THERMO)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        THERMO
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:09C0H         PUBLIC        _delay
+  C:09FEH         PUBLIC        _cmdwrt
+  C:08F6H         PUBLIC        main
+  C:09E0H         SYMBOL        _?ix1000
+  C:09E5H         SYMBOL        _?ix1001
+  B:00B0H.2       PUBLIC        intr_adc
+  B:00A0H.5       PUBLIC        en
+  B:00B0H.0       PUBLIC        rd_adc
+  C:0984H         PUBLIC        _convert_display
+  B:00A0H.7       PUBLIC        rs
+  B:00A0H.6       PUBLIC        rw
+  B:00B0H.1       PUBLIC        wr_adc
+  C:0A08H         PUBLIC        _datawrt
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        cmd
+  D:000EH         SYMBOL        data1
+  D:001BH         SYMBOL        value
+  -------         ENDDO         
+  C:08F6H         LINE#         18
+  C:08F6H         LINE#         19
+  C:08F6H         LINE#         21
+  C:0909H         LINE#         22
+  C:091CH         LINE#         25
+  C:091FH         LINE#         26
+  C:0922H         LINE#         28
+  C:092FH         LINE#         29
+  C:092FH         LINE#         30
+  C:0939H         LINE#         31
+  C:093CH         LINE#         32
+  C:0940H         LINE#         34
+  C:094EH         LINE#         35
+  C:094EH         LINE#         36
+  C:0958H         LINE#         37
+  C:095BH         LINE#         38
+  C:095FH         LINE#         40
+  C:0961H         LINE#         41
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/13/2021  21:57:09  PAGE 3
+
+
+  C:0963H         LINE#         42
+  C:0965H         LINE#         44
+  C:0965H         LINE#         45
+  C:0965H         LINE#         46
+  C:0967H         LINE#         47
+  C:096AH         LINE#         48
+  C:096CH         LINE#         49
+  C:096FH         LINE#         50
+  C:0971H         LINE#         51
+  C:0974H         LINE#         52
+  C:0979H         LINE#         53
+  C:0980H         LINE#         54
+  C:0982H         LINE#         55
+  -------         ENDPROC       MAIN
+  -------         PROC          _CMDWRT
+  D:0007H         SYMBOL        x
+  C:09FEH         LINE#         58
+  C:09FEH         LINE#         59
+  C:09FEH         LINE#         60
+  C:0A00H         LINE#         61
+  C:0A02H         LINE#         62
+  C:0A02H         LINE#         63
+  C:0A02H         LINE#         64
+  C:0A05H         LINE#         65
+  C:0A07H         LINE#         66
+  -------         ENDPROC       _CMDWRT
+  -------         PROC          _DATAWRT
+  D:0007H         SYMBOL        y
+  C:0A08H         LINE#         67
+  C:0A08H         LINE#         68
+  C:0A08H         LINE#         69
+  C:0A0AH         LINE#         70
+  C:0A0CH         LINE#         71
+  C:0A0CH         LINE#         72
+  C:0A0CH         LINE#         73
+  C:0A0FH         LINE#         74
+  C:0A11H         LINE#         75
+  -------         ENDPROC       _DATAWRT
+  -------         PROC          _CONVERT_DISPLAY
+  D:001CH         SYMBOL        value
+  -------         DO            
+  D:0007H         SYMBOL        x1
+  D:001DH         SYMBOL        x2
+  D:001EH         SYMBOL        x3
+  -------         ENDDO         
+  C:0984H         LINE#         76
+  C:0986H         LINE#         77
+  C:0986H         LINE#         80
+  C:098BH         LINE#         82
+  C:0991H         LINE#         83
+  C:0994H         LINE#         84
+  C:099DH         LINE#         85
+  C:09A3H         LINE#         86
+  C:09A6H         LINE#         88
+  C:09A9H         LINE#         89
+  C:09AEH         LINE#         90
+  C:09B3H         LINE#         91
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/13/2021  21:57:09  PAGE 4
+
+
+  -------         ENDPROC       _CONVERT_DISPLAY
+  C:09BCH         SYMBOL        L?0025
+  -------         PROC          L?0024
+  -------         ENDPROC       L?0024
+  C:09BCH         SYMBOL        L?0025
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        z
+  -------         DO            
+  D:0004H         SYMBOL        p
+  D:0002H         SYMBOL        q
+  -------         ENDDO         
+  C:09C0H         LINE#         94
+  C:09C0H         LINE#         95
+  C:09C0H         LINE#         97
+  C:09CAH         LINE#         98
+  C:09CAH         LINE#         99
+  C:09D8H         LINE#         100
+  C:09DFH         LINE#         101
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        THERMO
+
+  -------         MODULE        ?C?COPY
+  C:08D0H         PUBLIC        ?C?COPY
+  -------         ENDMOD        ?C?COPY
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0110H BYTE (13%) *
+******************************************************************************
+
+Program Size: data=32.0 xdata=0 code=533
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,130 @@
+C51 COMPILER V9.60.0.0   THERMO                                                            05/13/2021 21:57:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE THERMO
+OBJECT MODULE PLACED IN .\Objects\thermo.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE thermo.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\th
+                    -ermo.lst) TABS(2) OBJECT(.\Objects\thermo.obj)
+
+line level    source
+
+   1          /*this program is for displaying the temperature on 16*2 lcd display using 8051 microcontroller , LM35 sen
+             -sor and ADC0804*/
+   2           
+   3          #include<reg51.h>
+   4           
+   5          sbit rs=P2^7; //Register Select(RS) pin of 16*2 lcd
+   6          sbit rw=P2^6; //Read/Write(RW) pin of 16*2 lcd
+   7          sbit en=P2^5; //Enable(E) pin of 16*2 lcd
+   8           
+   9          sbit rd_adc=P3^0; //Read(RD) pin of ADC0804
+  10          sbit wr_adc=P3^1; //Write(WR) pin of ADC0804
+  11          sbit intr_adc=P3^2; //Interrupt(INTR) pin of ADC0804
+  12           
+  13          void delay(unsigned int)  ; //function for creating delay
+  14          void cmdwrt(unsigned char); //function for sending commands to 16*2 lcd display
+  15          void datawrt(unsigned char); //function for sending data to 16*2 lcd display
+  16          void convert_display(unsigned char); //function for converting ADC value to temperature and display it on 
+             -16*2 lcd display
+  17           
+  18          void main(void) //main function
+  19          {
+  20   1         unsigned char i;
+  21   1         unsigned char cmd[]={0x38,0x01,0x06,0x0c,0x82};//16*2 lcd initialization commands
+  22   1         unsigned char data1[]="Temperature:";
+  23   1         unsigned char value;
+  24   1       
+  25   1         P1=0xFF; //make Port 1 as input port
+  26   1         P0=0x00; //make Port 0 as output port
+  27   1       
+  28   1         for(i=0;i<5;i++) //send commands to 16*2 lcd display one command at a time
+  29   1         {
+  30   2            cmdwrt(cmd[i]); //function call to send commands to 16*2 lcd display
+  31   2        delay(1);
+  32   2         }
+  33   1       
+  34   1         for(i=0;i<12;i++) //send data to 16*2 lcd display one character at a time
+  35   1         {
+  36   2            datawrt(data1[i]);  //function call to send data to 16*2 lcd display
+  37   2        delay(1);
+  38   2         }
+  39   1       
+  40   1         intr_adc=1; //make INTR pin as input
+  41   1         rd_adc=1;    //set RD pin HIGH
+  42   1         wr_adc=1; //set WR pin LOW
+  43   1       
+  44   1         while(1)    //repeat forever
+  45   1         {
+  46   2        wr_adc=0; //send LOW to HIGH pulse on WR pin
+  47   2        delay(1);
+  48   2        wr_adc=1;
+  49   2        while(intr_adc==1); //wait for End of Conversion
+  50   2        rd_adc=0; //make RD = 0 to read the data from ADC0804
+  51   2        value=P1; //copy ADC data
+  52   2        convert_display(value); //function call to convert ADC data into temperature and display it on     16*2 
+C51 COMPILER V9.60.0.0   THERMO                                                            05/13/2021 21:57:09 PAGE 2   
+
+             -lcd display
+  53   2        delay(1000);  //interval between every cycles
+  54   2        rd_adc=1;   //make RD = 1 for the next cycle
+  55   2         }
+  56   1       
+  57   1      }
+  58          void cmdwrt (unsigned char x)
+  59          { 
+  60   1         P0=x;  //send the command to Port 0 on which 16*2 lcd is connected
+  61   1         rs=0;  //make RS = 0 for command
+  62   1         rw=0;  //make RW = 0 for write operation
+  63   1         en=1;  //send a HIGH to LOW pulse on Enable(E) pin to start commandwrite operation 
+  64   1         delay(1);
+  65   1         en=0;
+  66   1      }
+  67          void datawrt (unsigned char y)
+  68          { 
+  69   1         P0=y; //send the data to Port 0 on which 16*2 lcd is connected
+  70   1         rs=1; //make RS = 1 for command
+  71   1         rw=0; //make RW = 0 for write operation
+  72   1         en=1; //send a HIGH to LOW pulse on Enable(E) pin to start datawrite operation
+  73   1         delay(1);
+  74   1         en=0;
+  75   1      }
+  76          void convert_display(unsigned char value)
+  77          {
+  78   1        unsigned char x1,x2,x3;
+  79   1       
+  80   1        cmdwrt(0xc6);  //command to set the cursor to 6th position of 2nd line on 16*2 lcd
+  81   1       
+  82   1        x1=(value/10); //divide the value by 10 and store quotient in variable x1
+  83   1        x1=x1+(0x30); //convert variable x1 to ascii by adding 0x30
+  84   1        x2=value%10; //divide the value by 10 and store remainder in variable x2
+  85   1        x2=x2+(0x30); //convert variable x2 to ascii by adding 0x30
+  86   1        x3=0xDF; //ascii value of degree(°) symbol
+  87   1       
+  88   1        datawrt(x1);  //display temperature on 16*2 lcd display
+  89   1        datawrt(x2);
+  90   1        datawrt(x3);
+  91   1        datawrt('C'); 
+  92   1      }
+  93           
+  94          void delay(unsigned int z)
+  95          {
+  96   1        unsigned int p,q;
+  97   1        for(p=0;p<z;p++)    //repeat for 'z' times
+  98   1        {
+  99   2          for(q=0;q<1375;q++);   //repeat for 1375 times
+ 100   2        }
+ 101   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    254    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      23
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

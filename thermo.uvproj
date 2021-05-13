@@ -377,9 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>thermo1.c</FileName>
+              <FileName>thermo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\thermo1.c</FilePath>
+              <FilePath>.\thermo.c</FilePath>
             </File>
           </Files>
         </Group>
