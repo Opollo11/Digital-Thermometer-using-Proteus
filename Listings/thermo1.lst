@@ -1,0 +1,213 @@
+C51 COMPILER V9.60.0.0   THERMO1                                                           05/01/2021 17:34:59 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE THERMO1
+OBJECT MODULE PLACED IN .\Objects\thermo1.obj
+COMPILER INVOKED BY: C:\C51\BIN\C51.EXE thermo1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\thermo1.l
+                    -st) TABS(2) OBJECT(.\Objects\thermo1.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include<intrins.h>
+   3          sbit sda=P2^1;
+   4          sbit sc1=P2^0;
+   5          sbit rs=P1^0;
+   6          sbit rw=P1^1;
+   7          sbit en=P1^2;
+   8          sbit a0=B^0;
+   9          sbit a1=B^1;
+  10          sbit a2=B^2;
+  11          sbit a3=B^3;
+  12          sbit a4=B^4;
+  13          sbit a5=B^5;
+  14          sbit a6=B^6;
+  15          sbit a7=B^7;
+  16          void start();
+  17          void stop();
+  18          void check();
+  19          void display();
+  20          void conversion(unsigned char);
+  21          void write(unsigned char);
+  22          unsigned char read();
+  23          unsigned char num();
+  24          void ack();
+  25          void disp(unsigned char *);
+  26          void enable();
+  27          unsigned char v;
+  28          void main()
+  29          {
+  30   1      unsigned char com[4]={0x38,0x10,0x0e,0x80},s1;
+  31   1      for(s1=0;s1<4;s1++)
+  32   1      {
+  33   2      P3=com[s1];
+  34   2      rs=0;
+  35   2      rw=0;
+  36   2      enable();
+  37   2      }
+  38   1      disp("TEMPRATURE:");
+  39   1      start();
+  40   1      write(0x90);
+  41   1      check();
+  42   1      write(0x00);
+  43   1      check();
+  44   1      start();
+  45   1      write(0x91);
+  46   1      check();
+  47   1      while(1)
+  48   1      {
+  49   2      v=read();
+  50   2      ack();
+  51   2      conversion(v);
+  52   2      }
+  53   1      stop();
+  54   1      }
+C51 COMPILER V9.60.0.0   THERMO1                                                           05/01/2021 17:34:59 PAGE 2   
+
+  55          void start()
+  56          {
+  57   1      sc1=1;
+  58   1      sda=1;
+  59   1      _nop_();_nop_();
+  60   1      sda=0;
+  61   1      sc1=0;
+  62   1      }
+  63          void write(unsigned char val)
+  64          {
+  65   1      unsigned char v1,v2,v3=0x80;
+  66   1      v2=val;
+  67   1      for(v1=0;v1<8;v1++)
+  68   1      {
+  69   2      sda=v2&v3;
+  70   2      sc1=1;
+  71   2      _nop_();_nop_();
+  72   2      sc1=0;
+  73   2      v2=v2<<1;
+  74   2      }
+  75   1      }
+  76          void check()
+  77          {
+  78   1      bit c;
+  79   1      sc1=1;
+  80   1      c=sda;
+  81   1      for(v=0;v<12;v++);
+  82   1      sc1=0;
+  83   1      if(c==1)
+  84   1      {
+  85   2      stop();
+  86   2      }
+  87   1      }
+  88          void stop()
+  89          {
+  90   1      sc1=1;
+  91   1      sda=0;
+  92   1      _nop_();_nop_();
+  93   1      sda=1;
+  94   1      sc1=0;
+  95   1      }
+  96          void enabe()
+  97          {
+  98   1      unsigned int s2;
+  99   1      en=1;
+ 100   1      for(s2=0;s2<2000;s2++);
+ 101   1      en=0;
+ 102   1      }
+ 103          void disp(unsigned char *s)
+ 104          {
+ 105   1      unsigned char s3;
+ 106   1      for(s3=0;s[s3]!='\0';s3++)
+ 107   1      {
+ 108   2      P3=s[s3];
+ 109   2      rs=1;
+ 110   2      enable();
+ 111   2      }
+ 112   1      }
+ 113          unsigned char read()
+ 114          {
+ 115   1      sda=1;
+ 116   1      a7=sda;
+C51 COMPILER V9.60.0.0   THERMO1                                                           05/01/2021 17:34:59 PAGE 3   
+
+ 117   1      sc1=1;
+ 118   1      _nop_();_nop_();
+ 119   1      sc1=0;
+ 120   1      a6=sda;
+ 121   1      sc1=1;
+ 122   1      _nop_();_nop_();
+ 123   1      sc1=0;
+ 124   1      a5=sda;
+ 125   1      sc1=1;
+ 126   1      _nop_();_nop_();
+ 127   1      sc1=0;
+ 128   1      a4=sda;
+ 129   1      sc1=1;
+ 130   1      _nop_();_nop_();
+ 131   1      sc1=0;
+ 132   1      a3=sda;
+ 133   1      sc1=1;
+ 134   1      _nop_();_nop_();
+ 135   1      sc1=0;
+ 136   1      a2=sda;
+ 137   1      sc1=1;
+ 138   1      _nop_();_nop_();
+ 139   1      sc1=0;
+ 140   1      a1=sda;
+ 141   1      sc1=1;
+ 142   1      _nop_();_nop_();
+ 143   1      sc1=0;
+ 144   1      a0=sda;
+ 145   1      sc1=1;
+ 146   1      _nop_();_nop_();
+ 147   1      sc1=0;
+ 148   1      v=B;
+ 149   1      return v;
+ 150   1      }
+ 151          void ack()
+ 152          {
+ 153   1      sda=0;
+ 154   1      sc1=1;
+ 155   1      _nop_();_nop_();
+ 156   1      sc1=0;
+ 157   1      }
+ 158          void conversion(unsigned char val)
+ 159          {
+ 160   1      unsigned char s4,s5,s6;
+ 161   1      s4=val;
+ 162   1      s5=s4/10;
+ 163   1      s6=s4%10;
+ 164   1      s5=s5|0x30;
+ 165   1      s6=s6|0x30;
+ 166   1      P3=0x8b;
+ 167   1      rs=0;
+ 168   1      enable();
+ 169   1      P3=s5;
+ 170   1      rs=1;
+ 171   1      enable();
+ 172   1      }
+ 173          
+ 174          unsigned char num()
+ 175          {
+ 176   1      sda=1;
+ 177   1      a7=sda;
+ 178   1      sc1=1;
+C51 COMPILER V9.60.0.0   THERMO1                                                           05/01/2021 17:34:59 PAGE 4   
+
+ 179   1      
+ 180   1      sc1=0;
+ 181   1        return 0;
+ 182   1      }
+*** WARNING C294 IN LINE 53 OF thermo1.c: unreachable code
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    398    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
